@@ -217,11 +217,7 @@ class MysqlSyncTool:
 
         # 查询源表和目标表的所有列名
         source_cols = self.list_col(source_db, task['source_table'])
-        #print('源表', task['source_table'])
-        #print('源表列名', source_cols)
         dest_cols = self.list_col(dest_db, task['dest_table'])
-        #print('目标表', task['dest_table'])
-        #print('目标表列名', dest_cols)
         # 列名和row index转换
         source_col2index = {col:index for index,col in enumerate(source_cols)}
         source_index2col = {index:col for index,col in enumerate(source_cols)}
@@ -291,16 +287,9 @@ class MysqlSyncTool:
                 target_values_in_source = [str(value) if isinstance(value, datetime.date) else value for value in target_values_in_source]
                 target_values_in_source = [str(value) if isinstance(value, datetime.datetime) else value for value in target_values_in_source]
                 if result == None:
-                    #print('target_values_in_source:')
-                    #print(target_values_in_source)
-                    #print(target_values_in_source) # [5332, '18482131983', '', 1578289786, 1578879378, 1, 3, 0, 2369, 1, 0, 1578289786, 1578289786]
                     target_values_str = ','.join(["'"+value+"'" if isinstance(value, str) else str(value) for value in target_values_in_source]) # 5332,'18482131983','',1578289786,1578879378,1,3,0,2369,1,0,1578289786,1578289786
-                    #print(target_values_str)
                     sql = "INSERT INTO {} VALUES ({})".format(task['dest_table'], target_values_str)
-                    #self.log(target_values_in_source)
-                    #self.log(sql)
 
-                    #print(sql)
                     result = self.db_insert(dest_db, sql)
                     if result == True:
                         #print('插入数据成功')
@@ -326,11 +315,9 @@ class MysqlSyncTool:
 
                     # 如果不相同才更新
                     target_update_kv = [(dest_cols[i], "'"+value+"'" if isinstance(value, str) else str(value)) for i, value in enumerate(target_values_in_source)]
-                    #print(target_update_kv)
                     target_update_str = ','.join([str(col) + '=' + value  for col, value in target_update_kv])
                     target_where_kv = [(primary_key, "'"+source_primary_values[i]+"'" if isinstance(source_primary_values[i], str) else str(source_primary_values[i])) for i, primary_key in enumerate(primary_keys)]
                     target_where_str = ','.join([str(col) + '=' + value  for col, value in target_where_kv])
-                    #print(target_where_str)
                     sql = "UPDATE {} SET {} WHERE {}".format(task['dest_table'], target_update_str, target_where_str)
                     result = self.db_update(dest_db, sql)
                     if result == True:
