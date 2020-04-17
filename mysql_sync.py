@@ -4,7 +4,8 @@ import json
 import time
 import datetime
 import pymysql
-from sshtunnel import SSHTunnelForwarder
+import os
+#from sshtunnel import SSHTunnelForwarder
 
 import logging
 from logging import handlers
@@ -40,19 +41,10 @@ class Logger(object):
             self.logger.addHandler(sh) #把对象加到logger里
             self.logger.addHandler(th)
 
-# if __name__ == '__main__':
-#     log = Logger('all.log',level='debug')
-#     log.logger.debug('debug')
-#     log.logger.info('info')
-#     log.logger.warning('警告')
-#     log.logger.error('报错')
-#     log.logger.critical('严重')
-#     Logger('error.log', level='error').logger.error('error')
-
-
 class MysqlSyncTool:
-
     def __init__(self):
+        self.CONFIG_LOCAL_FILE = './mysql_sync_local.json'
+        self.CONFIG_FILE = './mysql_sync.json'
         self.logger = Logger('./logs/all.log', level='debug').logger
         self.error_logger = Logger('./logs/error.log', level='error').logger
 
@@ -360,7 +352,9 @@ class MysqlSyncTool:
 
 
     def start_sync(self):
-        with open('mysql_sync.json', 'r') as f:
+        config_file = self.CONFIG_LOCAL_FILE if os.path.exists(self.CONFIG_LOCAL_FILE) else self.CONFIG_FILE
+
+        with open(config_file, 'r') as f:
             configs = json.load(f)
 
             self.log('加载配置文件 OK')

@@ -1,2 +1,4 @@
 .idea
 **/*.iml
+
+mysql_sync_local.json
