@@ -1,0 +1,41 @@
+{
+  "source_host": "源数据库IP",
+  "source_username": "源 Mysql 用户名",
+  "source_password": "源 Mysql 密码",
+  "source_database": "源数据库名",
+  "source_port": 3306,
+  "dest_host": "目标数据库IP",
+  "dest_username": "目标 Mysql 用户名",
+  "dest_password": "目标 Mysql 密码",
+  "dest_database": "目标数据库名",
+  "dest_port": 3306,
+  "dest_metadata_table": "mysql_sync_metadata",
+  "tasks": [
+    {
+      "source_table": "source_table",
+      "dest_table": "source_table_ori",
+      "primary_keys": ["id"],
+      "update_col": "updated_at",
+      "sync_page_size": 100,
+      "sync_page_sleep": 0.2,
+      "auto_create": true,
+      "keep_cols": [
+        "id",
+        "user",
+        "nickname",
+        "created_at",
+        "updated_at"
+      ]
+    },
+    {
+      "source_table": "source_table_two",
+      "dest_table": "source_table_two_ori",
+      "primary_keys": ["user_id"],
+      "update_col": "created_at",
+      "sync_page_size": 100,
+      "sync_page_sleep": 0.2,
+      "auto_create": true,
+      "keep_cols": "all"
+    }
+  ]
+}
