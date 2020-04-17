@@ -24,8 +24,8 @@
 pip3 install pymysql
 git clone git@github.com:hellosimple/simple_mysql_sync_tool.git
 cd simple_mysql_sync_tool
-mv mysql_sync.json mysql_sync_local.json
-配置源数据库和目标数据库，配置需要同步的表和字段（注意目标数据库为空就行，scheme表会自动创建）
+cp mysql_sync.json mysql_sync_local.json （复制一份作为本地配置，这个文件不会上传）
+vim mysql_sync_local.json 配置源数据库和目标数据库，配置需要同步的表和字段（注意目标数据库为空就行，scheme表会自动创建）
 python mysql_sync.py 首次运行全量同步，以后再运行就是增量同步
 ```
 
